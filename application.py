@@ -1,26 +1,24 @@
 from flask import Flask,request,render_template
 import numpy as np
 import pandas as pd
-import os
 
 from sklearn.preprocessing import StandardScaler
 from src.pipeline.predict_pipeline import CustomData,PredictPipeline
 
 application=Flask(__name__)
 
-application.debug = os.environ.get('FLASK_DEBUG') in ['true', 'True']
-
+app=application
 
 ## Route for a home page
 
-@application.route('/')
+@app.route('/')
 def index():
     return render_template('index.html') 
 
-@application.route('/predictdata',methods=['GET','POST'])
+@app.route('/predictdata',methods=['GET','POST'])
 def predict_datapoint():
     if request.method=='GET':
-        return flask.render_template('home.html')
+        return render_template('home.html')
     else:
         data=CustomData(
             gender=request.form.get('gender'),
@@ -44,5 +42,4 @@ def predict_datapoint():
     
 
 if __name__=="__main__":
-    application.debug=True
-    application.run(host="0.0.0.0")        
+    app.run(host="0.0.0.0")        
